@@ -85,12 +85,21 @@ So far, we specified aesthetics and datasets inside a specific geom. However, if
 #1. Use the dataset twitter_users
 #2. map x = Year and y = millions
 #3. pass the aesthetics from 3 to geom_line() and geom_point() 
+ggplot(twitter_users,aes(x = Year, y = millions)) + 
+  geom_line(color = 'blue') + 
+  geom_point()
+
+
 ```
 
 
 ```{r}
 #use twitter_users to plot a linechart of twitter users over time
 #use sn_users to overlay a linechart of FB users over time
+
+ggplot()+
+  geom_line(data=twitter_users,aes(x=Year,y=millions,color='twitter')) + 
+  geom_line(data=sn_users,aes(x=year,y=facebook,color='fb'))
 ```
 
 
@@ -100,9 +109,31 @@ So far, we specified aesthetics and datasets inside a specific geom. However, if
  - use `beerDt` to create a linechart of beer consumption (in gallons of ethanol) in US from 1903.
  - add a layer of points using `geom_point`
  
+```{r}
+ggplot(data=beerDt,aes(x=Year,y=GallonsCapita))+
+  geom_line(color='blue')+
+  geom_point()
+  
+  
+
+```
+ 
+ 
  Suppose that you now want to flag (e.g., use a different color) the observation for consumption in your birthyear. We can do it in two steps:
     
     1. Create a new variable called 'myBirthYear' that takes value 'My birthyear' for your birth year, and NA for everything else. You could use `ifelse()` or conditional indexing/assignment
     2. Map `myBirthYear` to the fill of `geom_point` to flag your birth year
     3. Use ggtitle to add a title to the chart
+
+```{r}
+myBirthYear <- rep(FALSE,30)
+year <- seq(1981,2010)
+myBirthYear <- ifelse(year==1990,TRUE,FALSE)
+myData <- data.frame(cbind(year,myBirthYear))
+ggplot(data=myData)+
+  geom_point(aes(x=year,y=0,fill=myBirthYear))+
+  ggtitle('Hi')
+
+```
+
 
